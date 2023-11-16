@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 import os
 app = Flask(__name__)
@@ -42,6 +42,17 @@ class Productos(db.Model):
     prod_modified_date = db.Column(db.DateTime)
     prod_price = db.Column(db.Numeric)
 
+    def to_dict(self):
+        return {
+            "prod_id": self.prod_id,
+            "quantity": self.quantity,
+            "prod_name": self.prod_name,
+            "prod_category": self.prod_category,
+            "prod_description": self.prod_description,
+            "prod_quantity": self.prod_quantity,
+            "prod_modified_date": self.prod_modified_date,
+            "prod_price": self.prod_price,
+        }
 # Tabla de imágenes de productos
 
 class Prod_Images(db.Model):
@@ -52,7 +63,69 @@ class Prod_Images(db.Model):
     prod_image = db.Column(db.BLOB)
 
 
-@app.route('/')
+@app.route("/product/new", methods=["POST"])
+def new_product():
+    # Obtener los datos del nuevo producto
+    prod_name = request.form.get("prod_name")
+    prod_category = request.form.get("prod_category")
+    prod_description = request.form.get("prod_description")
+    prod_price = float(request.form.get("prod_price"))
+    prod_quantity = int(request.form.get("prod_quantity"))
+    # Crear el objeto Productos
+    producto = Productos(
+        prod_name=prod_name,
+        prod_category=prod_category,
+        prod_description=prod_description,
+        prod_price=prod_price,
+        prod_quantity=prod_quantity,
+    )
+    # Insertar el producto en la base de datos
+    db.session.add(producto)
+    db.session.commit()
+    return jsonify({'status': 'success', 'message': 'Producto creado exitosamente'})
+
+# Ruta para ver un producto por ID
+@app.route("/product/<prod_id>", methods=["GET"])
+def get_product(prod_id):
+    producto = Productos.query.filter_by(prod_id=prod_id).first()
+
+    if producto is None:
+        return "Producto no encontrado"
+    return jsonify(producto.to_dict())
+
+@app.route("/prod_images/new", methods=["POST"])
+def new_prod_image():
+    # Obtener los datos de la nueva imagen
+    prod_id = request.form.get("prod_id")
+    image_name = request.form.get("image_name")
+    image_data = request.files["image_data"].read()
+
+    # Crear el objeto Prod_Images
+    prod_image = Prod_Images(
+        prod_id=prod_id,
+        image_name=image_name,
+        image_data=image_data,
+    )
+
+    # Guardar la imagen en la base de datos
+    db.session.add(prod_image)
+    db.session.commit()
+
+    return "Imagen ingresada correctamente"
+
+@app.route("/prod_images/<int:prod_id>", methods=["GET"])
+def get_prod_image(prod_id):
+    # Obtener la imagen de la base de datos
+    prod_image = Prod_Images.query.filter_by(prod_id=prod_id).first()
+
+    # Devolver la imagen
+    if prod_image is not None:
+        return prod_image.image_data
+    else:
+        return None
+
+if __name__ == "__main__":
+    app.run(debug=True)
 
 def home():
     return 'hello world'
