@@ -65,24 +65,30 @@ class Prod_Images(db.Model):
 
 @app.route("/product/new", methods=["POST"])
 def new_product():
-    # Obtener los datos del nuevo producto
-    prod_name = request.form.get("prod_name")
-    prod_category = request.form.get("prod_category")
-    prod_description = request.form.get("prod_description")
-    prod_price = float(request.form.get("prod_price"))
-    prod_quantity = int(request.form.get("prod_quantity"))
-    # Crear el objeto Productos
-    producto = Productos(
-        prod_name=prod_name,
-        prod_category=prod_category,
-        prod_description=prod_description,
-        prod_price=prod_price,
-        prod_quantity=prod_quantity,
-    )
-    # Insertar el producto en la base de datos
-    db.session.add(producto)
-    db.session.commit()
-    return jsonify({'status': 'success', 'message': 'Producto creado exitosamente'})
+    try:
+        # Get a la info mandada en URL
+        prod_name = request.form.get("prod_name")
+        prod_category = request.form.get("prod_category")
+        prod_description = request.form.get("prod_description")
+        prod_price = float(request.form.get("prod_price"))
+        prod_quantity = int(request.form.get("prod_quantity"))
+
+        # Creamos el objeto del producto
+        producto = Productos(
+            prod_name=prod_name,
+            prod_category=prod_category,
+            prod_description=prod_description,
+            prod_price=prod_price,
+            prod_quantity=prod_quantity,
+        )
+
+        # Insertar a la base de datos
+        db.session.add(producto)
+        db.session.commit()
+
+        return jsonify({'status': 'success', 'message': 'Producto creado exitosamente'})
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': f'Error al crear el producto: {str(e)}'})
 
 # Ruta para ver un producto por ID
 @app.route("/product/<prod_id>", methods=["GET"])
@@ -90,7 +96,7 @@ def get_product(prod_id):
     producto = Productos.query.filter_by(prod_id=prod_id).first()
 
     if producto is None:
-        return "Producto no encontrado"
+        return jsonify({'status': 'error', 'message': f'Error al obtener el dato'})
     return jsonify(producto.to_dict())
 
 @app.route("/prod_images/new", methods=["POST"])
