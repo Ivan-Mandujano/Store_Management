@@ -101,23 +101,25 @@ def get_product(prod_id):
 
 @app.route("/prod_images/new", methods=["POST"])
 def new_prod_image():
-    # Obtener los datos de la nueva imagen
-    prod_id = request.form.get("prod_id")
-    image_name = request.form.get("image_name")
-    image_data = request.files["image_data"].read()
+    try:
+        # Obtener los datos de la nueva imagen
+        prod_id = request.form.get("prod_id")
+        image_name = request.form.get("image_name")
+        image_data = request.files["image_data"].read()
 
-    # Crear el objeto Prod_Images
-    prod_image = Prod_Images(
-        prod_id=prod_id,
-        image_name=image_name,
-        image_data=image_data,
-    )
+        # Crear el objeto Prod_Images
+        prod_image = Prod_Images(
+            prod_id=prod_id,
+            image_name=image_name,
+            image_data=image_data,
+        )
 
-    # Guardar la imagen en la base de datos
-    db.session.add(prod_image)
-    db.session.commit()
-
-    return "Imagen ingresada correctamente"
+        # Guardar la imagen en la base de datos
+        db.session.add(prod_image)
+        db.session.commit()
+        return jsonify({'status': 'success', 'message': 'Foto ingresada correctamente'})
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': f'Error al ingresar foto: {str(e)}'})
 
 @app.route("/prod_images/<int:prod_id>", methods=["GET"])
 def get_prod_image(prod_id):
@@ -128,7 +130,8 @@ def get_prod_image(prod_id):
     if prod_image is not None:
         return prod_image.image_data
     else:
-        return None
+        return jsonify({'status': 'error', 'message': f'Error al obtener el dato'})
+
 
 if __name__ == "__main__":
     app.run(debug=True)
