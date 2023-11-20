@@ -15,10 +15,9 @@ class Users(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.Text, nullable=False)
     last_name = db.Column(db.Text, nullable=False)
-    email = db.Column(db.Text, nullable=False)
+    email = db.Column(db.Text, nullable=False, unique=True)
     password = db.Column(db.Text, nullable=False)
     access_level = db.Column(db.Integer, nullable=False)
-
 # Tabla de tickets de cada compra
 
 class Tickets(db.Model):
@@ -62,18 +61,54 @@ class Prod_Images(db.Model):
     prod_id = db.Column(db.Integer, db.ForeignKey("productos.prod_id"))
     prod_image = db.Column(db.BLOB)
 
+#Aqui registramos al usuario en la base de datos:
+@app.route("/register", methods=["POST"])
+def register():
+    try:
+        first_name = request.form.get("first_name")
+        last_name = request.form.get("last_name")
+        email = request.form.get("email")
+        password = request.form.get("password")
+        access_level = request.form.get("access_level")
+
+        user = Users(
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            password=password,
+            access_level=access_level,
+        )
+
+        db.session.add(user)
+        db.session.commit()
+        return jsonify({"status": "success", "message": "Usuario registrado exitosamente"})
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': f'Error al registrar el usuario'})
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    try:
+        email = request.form.get("email")
+        password = request.form.get("password")
+
+        # Buscar al usuario en la base de datos
+        user = Users.query.filter_by(email=email).first()
+
+        if user is not None and user.password == password:
+            return jsonify({"status": "success", "message": "Inicio de sesión exitoso"})
+        else:
+            return jsonify({"status": "error", "message": "Credenciales incorrectas"})
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': f'Sucedio un error'})
 
 @app.route("/product/new", methods=["POST"])
 def new_product():
     try:
-        # Get a la info mandada en URL
         prod_name = request.form.get("prod_name")
         prod_category = request.form.get("prod_category")
         prod_description = request.form.get("prod_description")
         prod_price = float(request.form.get("prod_price"))
         prod_quantity = int(request.form.get("prod_quantity"))
 
-        # Creamos el objeto del producto
         producto = Productos(
             prod_name=prod_name,
             prod_category=prod_category,
@@ -82,7 +117,6 @@ def new_product():
             prod_quantity=prod_quantity,
         )
 
-        # Insertar a la base de datos
         db.session.add(producto)
         db.session.commit()
 
@@ -102,7 +136,6 @@ def get_product(prod_id):
 @app.route("/prod_images/new", methods=["POST"])
 def new_prod_image():
     try:
-        # Obtener los datos de la nueva imagen
         prod_id = request.form.get("prod_id")
         image_name = request.form.get("image_name")
         image_data = request.files["image_data"].read()
@@ -114,7 +147,6 @@ def new_prod_image():
             image_data=image_data,
         )
 
-        # Guardar la imagen en la base de datos
         db.session.add(prod_image)
         db.session.commit()
         return jsonify({'status': 'success', 'message': 'Foto ingresada correctamente'})
