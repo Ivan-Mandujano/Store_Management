@@ -1,6 +1,11 @@
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 import os
+
+#Se llama a la funcion sha256 que realice
+import encrypt
+from encrypt import sha256
+
 app = Flask(__name__)
 #Se obtiene la direccion de la base de datos dentro de nuestra computadora
 base_dir = os.path.abspath(os.path.dirname(__file__))
@@ -71,11 +76,15 @@ def register():
         password = request.form.get("password")
         access_level = request.form.get("access_level")
 
+        #Se hashea la contraseña
+        print("Antes del problema ")
+        hash_result = sha256(password.encode('utf-8'))
+        print(hash_result)
         user = Users(
             first_name=first_name,
             last_name=last_name,
             email=email,
-            password=password,
+            password=hash_result,
             access_level=access_level,
         )
 
@@ -89,11 +98,12 @@ def login():
     try:
         email = request.form.get("email")
         password = request.form.get("password")
-
+        #Se hashea la contraseña para ver si coincide
+        hash_result = sha256(password.encode('utf-8'))
         # Buscar al usuario en la base de datos
         user = Users.query.filter_by(email=email).first()
 
-        if user is not None and user.password == password:
+        if user is not None and user.password == hash_result:
             return jsonify({"status": "success", "message": "Inicio de sesión exitoso"})
         else:
             return jsonify({"status": "error", "message": "Credenciales incorrectas"})
