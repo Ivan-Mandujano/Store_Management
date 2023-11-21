@@ -32,6 +32,13 @@ class Tickets(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
     prod_id = db.Column(db.Integer, db.ForeignKey("productos.prod_id"))
     date = db.Column(db.DateTime)
+    def to_dict(self):
+        return {
+            "ticket_id": self.ticket_id,
+            "user_id": self.user_id,
+            "prod_id": self.prod_id,
+            "date": self.date,
+        }
 # Tabla de productos
 
 class Productos(db.Model):
@@ -77,9 +84,7 @@ def register():
         access_level = request.form.get("access_level")
 
         #Se hashea la contraseña
-        print("Antes del problema ")
         hash_result = sha256(password.encode('utf-8'))
-        print(hash_result)
         user = Users(
             first_name=first_name,
             last_name=last_name,
@@ -174,6 +179,67 @@ def get_prod_image(prod_id):
     else:
         return jsonify({'status': 'error', 'message': f'Error al obtener el dato'})
 
+#Obtener todos los tickets registrados
+@app.route("/tickets", methods=["GET"])
+def get_tickets():
+    try:
+        tickets = Tickets.query.all()
+
+        # Convertir los tickets a una lista de diccionarios
+        ticket_dicts = [ticket.to_dict() for ticket in tickets]
+
+        return jsonify(ticket_dicts)
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': f'No se ha podido obtener la informacion'})
+#Crear un ticket
+@app.route("/tickets", methods=["POST"])
+def create_ticket():
+    try:
+        user_id = request.form.get("user_id")
+        prod_id = request.form.get("prod_id")
+        date = request.form.get("date")
+
+        ticket = Tickets(user_id=user_id, prod_id=prod_id, date=date)
+
+        db.session.add(ticket)
+        db.session.commit()
+
+        return jsonify({"status": "success", "message": "Ticket creado exitosamente"})
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': f'No se ha podido crear el ticket'})
+
+@app.route("/tickets/<user_id>", methods=["GET"])
+def get_tickets_by_user_id(user_id):
+    try:
+        tickets = Tickets.query.filter_by(user_id=user_id).all()
+
+        ticket_dicts = [ticket.to_dict() for ticket in tickets]
+
+        return jsonify(ticket_dicts)
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': f'No se ha podido obtener el ticket'})
+
+@app.route("/tickets/date/<date>", methods=["GET"])
+def get_tickets_by_date(date):
+    try:
+        tickets = Tickets.query.filter_by(date=date).all()
+
+        ticket_dicts = [ticket.to_dict() for ticket in tickets]
+
+        return jsonify(ticket_dicts)
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': f'No se ha podido obtener el ticket'})
+
+@app.route("/tickets/search/<prod_id>", methods=["GET"])
+def get_tickets_by_prod_id(prod_id):
+    try:
+        tickets = Tickets.query.filter_by(prod_id=prod_id).all()
+
+        ticket_dicts = [ticket.to_dict() for ticket in tickets]
+
+        return jsonify(ticket_dicts)
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': f'No se ha podido obtener el ticket'})
 
 if __name__ == "__main__":
     app.run(debug=True)
