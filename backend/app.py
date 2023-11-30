@@ -192,7 +192,7 @@ def get_tickets():
     except Exception as e:
         return jsonify({'status': 'error', 'message': f'No se ha podido obtener la informacion'})
 #Crear un ticket
-@app.route("/tickets", methods=["POST"])
+@app.route("/tickets/new", methods=["POST"])
 def create_ticket():
     try:
         user_id = request.form.get("user_id")
