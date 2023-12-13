@@ -21,6 +21,8 @@ public class Main extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("LoginScene.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 350, 450);
         stage.setResizable(false);
+		Image icon = new Image("Images/logo.png");
+		stage.getIcons().add(icon);
         stage.setTitle("StoreApp");
         stage.setScene(scene);
         stage.show();
