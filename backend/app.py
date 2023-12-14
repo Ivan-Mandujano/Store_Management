@@ -101,8 +101,9 @@ def register():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     try:
-        email = request.form.get("email")
-        password = request.form.get("password")
+        data = request.json
+        email = data.get("email")
+        password = data.get("password")
         #Se hashea la contraseña para ver si coincide
         hash_result = sha256(password.encode('utf-8'))
         # Buscar al usuario en la base de datos
