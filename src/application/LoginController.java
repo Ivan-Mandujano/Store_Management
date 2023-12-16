@@ -5,6 +5,7 @@ import java.io.IOException;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -12,7 +13,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 //URL
 import java.io.IOException;
 import java.io.BufferedReader;
@@ -22,6 +24,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
+//Json
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 public class LoginController  {
 
     public LoginController() {
@@ -80,14 +85,24 @@ public class LoginController  {
 
                 // Analizar la respuesta JSON
                 String jsonResponse = response.toString();
-                String status = getValueFromJson(jsonResponse, "status");
-                String message = getValueFromJson(jsonResponse, "message");
+                try {
+                    // Crear un objeto ObjectMapper de Jackson
+                    ObjectMapper objectMapper = new ObjectMapper();
 
-                System.out.println("Status: " + status);
-                System.out.println("Message: " + message);
-                if(status == "success") {
-                	Correct=true;
+                    // Leer el JSON como un JsonNode
+                    JsonNode jsonNode = objectMapper.readTree(jsonResponse);
+
+                    // Extraer valores del JsonNode
+                    String message = jsonNode.get("message").asText();
+                    String status = jsonNode.get("status").asText();
+                    // Imprimir los valores extraídos
+                    if ("success".equals(status)) {
+                        Correct = true;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+
             }
             connection.disconnect();
         } catch (Exception e) {
@@ -96,7 +111,17 @@ public class LoginController  {
         if(Correct) {
             wrongLogIn.setText("Success!");
             wrongLogIn.setTextFill(Color.GREEN);
-            m.changeScene("Dashboard.fxml", 500, 600);
+            Stage stage = (Stage) loginButton.getScene().getWindow();
+            // Cargar el nuevo FXML
+            Parent root = FXMLLoader.load(getClass().getResource("Dashboard.fxml"));
+            // Crear una nueva escena con el nuevo FXML
+            Scene nuevaEscena = new Scene(root, 1000, 800);
+            // Establecer la nueva escena en el Stage
+            stage.setScene(nuevaEscena);
+            stage.centerOnScreen();
+
+            // Mostrar el Stage
+            stage.show();
         }
 
         else if(username.getText().isEmpty() && password.getText().isEmpty()) {
@@ -108,10 +133,6 @@ public class LoginController  {
             wrongLogIn.setText("Wrong username or password!");
         }
     }
-    private static String getValueFromJson(String jsonString, String key) {
-        int startIndex = jsonString.indexOf("\"" + key + "\":\"") + key.length() + 4;
-        int endIndex = jsonString.indexOf("\"", startIndex);
-        return jsonString.substring(startIndex, endIndex);
-    }
+
 
 }

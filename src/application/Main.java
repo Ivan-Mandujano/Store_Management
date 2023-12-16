@@ -30,8 +30,4 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    public void changeScene(String fxml, double width, double height) throws IOException {
-        Parent pane = FXMLLoader.load(getClass().getResource(fxml));
-        //stg.setScene(new Scene(pane, width, height));
-	}
 }
