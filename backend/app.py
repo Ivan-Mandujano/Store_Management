@@ -92,26 +92,34 @@ def register():
             password=hash_result,
             access_level=access_level,
         )
-
         db.session.add(user)
         db.session.commit()
         return jsonify({"status": "success", "message": "Usuario registrado exitosamente"})
     except Exception as e:
         return jsonify({'status': 'error', 'message': f'Error al registrar el usuario'})
-@app.route("/login", methods=["GET", "POST"])
+
+@app.route("/login", methods=["POST"])
 def login():
     try:
-        #se obtiene la peticion como un json
         data = request.json
         email = data.get("email")
         password = data.get("password")
-        #Se hashea la contraseña para ver si coincide
         hash_result = sha256(password.encode('utf-8'))
+
         # Buscar al usuario en la base de datos
         user = Users.query.filter_by(email=email).first()
 
         if user is not None and user.password == hash_result:
-            return jsonify({"status": "success", "message": "Inicio de sesión exitoso"})
+            # Incluye user_id y access_level en la respuesta
+            response_data = {
+                "status": "success",
+                "message": "Inicio de sesión exitoso",
+                "user_id": user.user_id,
+                "access_level": user.access_level,
+                "First_name": user.first_name,
+                "Last_name": user.last_name
+            }
+            return jsonify(response_data)
         else:
             return jsonify({"status": "error", "message": "Credenciales incorrectas"})
     except Exception as e:
