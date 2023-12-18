@@ -92,12 +92,19 @@ public class LoginController  {
                     // Leer el JSON como un JsonNode
                     JsonNode jsonNode = objectMapper.readTree(jsonResponse);
 
-                    // Extraer valores del JsonNode
+                    // Extraer variables
+                    String firstName = jsonNode.get("First_name").asText();
+                    String lastName = jsonNode.get("Last_name").asText();
+                    String accessLevel = jsonNode.get("access_level").asText();
                     String message = jsonNode.get("message").asText();
                     String status = jsonNode.get("status").asText();
+                    String userId = jsonNode.get("user_id").asText();
+
                     // Imprimir los valores extraídos
                     if ("success".equals(status)) {
                         Correct = true;
+                        UserData.getInstance().setUserId(userId, accessLevel);
+                        UserData.getInstance().setName(firstName, lastName);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -112,16 +119,8 @@ public class LoginController  {
             wrongLogIn.setText("Success!");
             wrongLogIn.setTextFill(Color.GREEN);
             Stage stage = (Stage) loginButton.getScene().getWindow();
-            // Cargar el nuevo FXML
-            Parent root = FXMLLoader.load(getClass().getResource("Dashboard.fxml"));
-            // Crear una nueva escena con el nuevo FXML
-            Scene nuevaEscena = new Scene(root, 1000, 800);
-            // Establecer la nueva escena en el Stage
-            stage.setScene(nuevaEscena);
-            stage.centerOnScreen();
-
-            // Mostrar el Stage
-            stage.show();
+            // Se abre la nueva vista
+            m.loadView(stage,"Dashboard.fxml", "Dashboard", 1000, 800);
         }
 
         else if(username.getText().isEmpty() && password.getText().isEmpty()) {
