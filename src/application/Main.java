@@ -51,6 +51,8 @@ public class Main extends Application {
             primaryStage.getIcons().add(icon);
             primaryStage.setTitle(title);
             primaryStage.setScene(scene);
+            primaryStage.centerOnScreen();
+
 
             // Mostrar la nueva vista
             primaryStage.show();

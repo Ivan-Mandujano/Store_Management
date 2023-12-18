@@ -1,5 +1,152 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" />
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: #2C344B;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.NewProductController">
+   <left>
+      <AnchorPane prefHeight="800.0" prefWidth="211.0" style="-fx-background-color: #1E2333;" BorderPane.alignment="CENTER" />
+   </left>
+   <top>
+      <AnchorPane prefHeight="82.0" prefWidth="1000.0" style="-fx-background-color: #1E2333;" BorderPane.alignment="CENTER">
+         <children>
+            <Label layoutX="357.0" layoutY="23.0" text="Store Management" textFill="#f8f8f8">
+               <font>
+                  <Font name="SansSerif Bold" size="32.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </top>
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <TextField fx:id="name" layoutX="231.0" layoutY="260.0" prefHeight="30.0" prefWidth="400.0">
+               <cursor>
+                  <Cursor fx:constant="TEXT" />
+               </cursor>
+               <font>
+                  <Font name="SansSerif Bold" size="14.0" />
+               </font>
+            </TextField>
+            <TextField fx:id="category" layoutX="231.0" layoutY="319.0" prefHeight="30.0" prefWidth="400.0">
+               <cursor>
+                  <Cursor fx:constant="TEXT" />
+               </cursor>
+               <font>
+                  <Font name="SansSerif Bold" size="14.0" />
+               </font>
+            </TextField>
+            <Label layoutX="151.0" layoutY="262.0" text="Name:" textFill="#f8f8f8">
+               <font>
+                  <Font name="SansSerif Bold" size="22.0" />
+               </font>
+            </Label>
+            <Label layoutX="119.0" layoutY="321.0" text="Category:" textFill="#f8f8f8">
+               <font>
+                  <Font name="SansSerif Bold" size="22.0" />
+               </font>
+            </Label>
+            <Label layoutX="93.0" layoutY="382.0" text="Description:" textFill="#f8f8f8">
+               <font>
+                  <Font name="SansSerif Bold" size="22.0" />
+               </font>
+            </Label>
+            <Label layoutX="158.0" layoutY="505.0" text="Price:" textFill="#f8f8f8">
+               <font>
+                  <Font name="SansSerif Bold" size="22.0" />
+               </font>
+            </Label>
+            <Label layoutX="398.0" layoutY="504.0" text="Quantity:" textFill="#f8f8f8">
+               <font>
+                  <Font name="SansSerif Bold" size="22.0" />
+               </font>
+            </Label>
+            <Label layoutX="296.0" layoutY="27.0" text="Add new product" textFill="#f8f8f8">
+               <font>
+                  <Font name="SansSerif Bold" size="25.0" />
+               </font>
+            </Label>
+            <TextArea fx:id="description" layoutX="231.0" layoutY="378.0" prefHeight="91.0" prefWidth="400.0" wrapText="true">
+               <cursor>
+                  <Cursor fx:constant="TEXT" />
+               </cursor>
+               <font>
+                  <Font name="SansSerif Bold" size="14.0" />
+               </font>
+            </TextArea>
+            <TextField fx:id="price" layoutX="232.0" layoutY="504.0" prefHeight="30.0" prefWidth="127.0">
+               <cursor>
+                  <Cursor fx:constant="TEXT" />
+               </cursor>
+               <font>
+                  <Font name="SansSerif Bold" size="14.0" />
+               </font>
+            </TextField>
+            <TextField fx:id="quantity" layoutX="504.0" layoutY="505.0" prefHeight="30.0" prefWidth="127.0">
+               <cursor>
+                  <Cursor fx:constant="TEXT" />
+               </cursor>
+               <font>
+                  <Font name="SansSerif Bold" size="14.0" />
+               </font>
+            </TextField>
+            <Button fx:id="add" layoutX="231.0" layoutY="593.0" mnemonicParsing="false" onAction="#handleAdd" prefHeight="40.0" prefWidth="400.0" style="-fx-background-color: #4cd482;" text="Add" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="SansSerif Bold" size="18.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <ImageView fx:id="imageView" fitHeight="135.0" fitWidth="173.0" layoutX="84.0" layoutY="104.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/Unknown.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="pickImageButton" layoutX="235.0" layoutY="158.0" mnemonicParsing="false" onAction="#handlePickImage" prefHeight="26.0" prefWidth="123.0" style="-fx-background-color: #4cd482;" text="Pick image" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="SansSerif Bold" size="12.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Label fx:id="EmptyName" layoutX="328.0" layoutY="288.0" prefHeight="17.0" prefWidth="207.0" textAlignment="CENTER" textFill="RED">
+               <font>
+                  <Font name="SansSerif Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="EmptyCategory" layoutX="328.0" layoutY="351.0" prefHeight="17.0" prefWidth="207.0" textAlignment="CENTER" textFill="RED">
+               <font>
+                  <Font name="SansSerif Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="EmptyDescription" layoutX="328.0" layoutY="469.0" prefHeight="17.0" prefWidth="207.0" textAlignment="CENTER" textFill="RED">
+               <font>
+                  <Font name="SansSerif Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="EmptyPrice" layoutX="232.0" layoutY="535.0" prefHeight="17.0" prefWidth="127.0" textAlignment="CENTER" textFill="RED">
+               <font>
+                  <Font name="SansSerif Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="EmptyQuantity" layoutX="504.0" layoutY="535.0" prefHeight="17.0" prefWidth="127.0" textAlignment="CENTER" textFill="RED">
+               <font>
+                  <Font name="SansSerif Bold" size="12.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>
