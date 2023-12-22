@@ -10,7 +10,18 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+//URL
+import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
+//Json
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 public class NewProductController {
 	//BUTTONS
     @FXML
@@ -65,8 +76,45 @@ public class NewProductController {
     private void handleAdd() {
     	Boolean check = checkSend();
     	if(check) {
-    		
+    		SendtoDatabase();
     	}
+    }
+    private void SendtoDatabase() {
+        try {
+            String prodName = name.getText();
+            String prodCategory = category.getText();
+            String prodDescription = description.getText();
+            String prodPrice = price.getText();
+            String prodQuantity = quantity.getText();
+
+            // Solicitud
+            String postData = "prod_name=" + prodName +
+                              "&prod_category=" + prodCategory +
+                              "&prod_description=" + prodDescription +
+                              "&prod_price=" + prodPrice +
+                              "&prod_quantity=" + prodQuantity;
+
+            URL url = new URL("http://127.0.0.1:5000/product/new");
+
+            // Abre la conexión HTTP
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+            // Configura la conexión
+            connection.setRequestMethod("POST");
+            connection.setDoOutput(true);
+            try (OutputStream os = connection.getOutputStream()) {
+                byte[] input = postData.getBytes(StandardCharsets.UTF_8);
+                os.write(input, 0, input.length);
+            }
+
+            // Obtiene la respuesta del servidor
+            int responseCode = connection.getResponseCode();
+            System.out.println("Response Code: " + responseCode);
+            // Cierra la conexión
+            connection.disconnect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private Boolean checkSend() {
     	Main m = new Main();
