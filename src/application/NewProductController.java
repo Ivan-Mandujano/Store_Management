@@ -45,12 +45,11 @@ public class NewProductController {
     
     @FXML
     private void handlePickImage() {
-        // Configurar el FileChooser
+        // Configurar el File Chooser
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Seleccionar Imagen");
+        fileChooser.setTitle("Choose Image");
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Archivos de Imagen", "*.png", "*.jpg", "*.gif", "*.bmp"),
-                new FileChooser.ExtensionFilter("Todos los archivos", "*.*")
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg","*.bmp")
         );
 
         // Mostrar el FileChooser y obtener la imagen seleccionada
@@ -58,14 +57,55 @@ public class NewProductController {
 
         // Verificar si se seleccionó un archivo
         if (selectedFile != null) {
-            // Cargar la imagen seleccionada en el ImageView
             Image selectedImage = new Image(selectedFile.toURI().toString());
             imageView.setImage(selectedImage);
         }
     }
     @FXML
-    private void handleAdd() {}
-    
+    private void handleAdd() {
+    	Boolean check = checkSend();
+    	if(check) {
+    		
+    	}
+    }
+    private Boolean checkSend() {
+    	Main m = new Main();
+    	Boolean NoErrors = true;
+    	if(name.getText().isEmpty()) {
+    		EmptyName.setText("Please enter the name");
+    		NoErrors=false;
+    	}
+    	else {
+    		EmptyName.setText("");
+    	}
+    	if(category.getText().isEmpty()) {
+    		EmptyCategory.setText("Please enter the category");
+    		NoErrors=false;
+    	}
+    	else {
+    		EmptyCategory.setText("");
+    	}
+    	if(description.getText().isEmpty()) {
+    		EmptyDescription.setText("Please enter the description");
+    		NoErrors=false;
+    	}else {
+    		EmptyDescription.setText("");
+    	}
+    	if(price.getText().isEmpty()) {
+    		EmptyPrice.setText("Please enter the description");
+    		NoErrors=false;
+    	}else {
+    		EmptyPrice.setText("");
+    	}
+    	if(quantity.getText().isEmpty()) {
+    		EmptyQuantity.setText("Please enter the description");
+    		NoErrors=false;
+    	}else {
+    		EmptyQuantity.setText("");
+    	}
+		return NoErrors;
+    	
+    }
     
 }
                                            
