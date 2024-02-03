@@ -268,10 +268,10 @@ public class NewProductController {
     	if(quantity.getText().isEmpty()) {
     		EmptyQuantity.setText("Please enter the description");
     		NoErrors=false;
-    	}if(imagePath.isEmpty()) {
-    		NoErrors=false;
     	}else {
     		EmptyQuantity.setText("");
+    	}if(imagePath.isEmpty()) {
+    		NoErrors=false;
     	}
 		return NoErrors;
     	
