@@ -9,7 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.scene.control.Alert;
-
+import javafx.scene.control.PasswordField;
 import java.io.File;
 //URL
 import java.io.IOException;
@@ -52,9 +52,9 @@ public class NewUserController {
     @FXML
     private TextField email;
     @FXML
-    private TextField password;
+    private PasswordField password;
     @FXML
-    private TextField confirm;
+    private PasswordField confirm;
     //ERROR LABELS
     @FXML
     private Label emptyFirst;
