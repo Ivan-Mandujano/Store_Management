@@ -7,11 +7,13 @@ import encrypt
 from encrypt import sha256
 
 app = Flask(__name__)
+
 #Se obtiene la direccion de la base de datos dentro de nuestra computadora
 base_dir = os.path.abspath(os.path.dirname(__file__))
 db_path = os.path.join(base_dir, 'database/StoreInventory.db')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_path
 db = SQLAlchemy(app)
+app.app_context().push()
 # Tabla de usuarios
 
 class Users(db.Model):
@@ -77,13 +79,13 @@ class Prod_Images(db.Model):
 @app.route("/register", methods=["POST"])
 def register():
     try:
-        first_name = request.form.get("first_name")
-        last_name = request.form.get("last_name")
-        email = request.form.get("email")
-        password = request.form.get("password")
-        access_level = request.form.get("access_level")
+        data = request.json
+        first_name = data.get("first_name")
+        last_name = data.get("last_name")
+        email = data.get("email")
+        password = data.get("password")
+        access_level = data.get("access_level")
 
-        #Se hashea la contraseña
         hash_result = sha256(password.encode('utf-8'))
         user = Users(
             first_name=first_name,
@@ -96,7 +98,7 @@ def register():
         db.session.commit()
         return jsonify({"status": "success", "message": "Usuario registrado exitosamente"})
     except Exception as e:
-        return jsonify({'status': 'error', 'message': f'Error al registrar el usuario'})
+        return jsonify({'status': 'error', 'message': f'Error al registrar el usuario: {str(e)}'})
 
 @app.route("/login", methods=["POST"])
 def login():
@@ -134,6 +136,7 @@ def new_product():
         prod_price = float(request.form.get("prod_price"))
         prod_quantity = int(request.form.get("prod_quantity"))
 
+        # Crear el registro del producto
         producto = Productos(
             prod_name=prod_name,
             prod_category=prod_category,
@@ -142,13 +145,16 @@ def new_product():
             prod_quantity=prod_quantity,
         )
 
+        # Agregar a la sesión y guardar en la base de datos
         db.session.add(producto)
         db.session.commit()
 
-        return jsonify({'status': 'success', 'message': 'Producto creado exitosamente'})
+        # Obtener el prod_id recién creado
+        new_prod_id = producto.prod_id
+
+        return jsonify({'status': 'success', 'message': 'Producto creado exitosamente', 'prod_id': new_prod_id})
     except Exception as e:
         return jsonify({'status': 'error', 'message': f'Error al crear el producto: {str(e)}'})
-
 # Ruta para ver un producto por ID
 @app.route("/product/<prod_id>", methods=["GET"])
 def get_product(prod_id):
@@ -162,14 +168,12 @@ def get_product(prod_id):
 def new_prod_image():
     try:
         prod_id = request.form.get("prod_id")
-        image_name = request.form.get("image_name")
         image_data = request.files["image_data"].read()
 
-        # Crear el objeto Prod_Images
+        # Create the object Prod_Images
         prod_image = Prod_Images(
             prod_id=prod_id,
-            image_name=image_name,
-            image_data=image_data,
+            prod_image=image_data,
         )
 
         db.session.add(prod_image)
@@ -177,7 +181,6 @@ def new_prod_image():
         return jsonify({'status': 'success', 'message': 'Foto ingresada correctamente'})
     except Exception as e:
         return jsonify({'status': 'error', 'message': f'Error al ingresar foto: {str(e)}'})
-
 @app.route("/prod_images/<int:prod_id>", methods=["GET"])
 def get_prod_image(prod_id):
     # Obtener la imagen de la base de datos
@@ -250,9 +253,6 @@ def get_tickets_by_prod_id(prod_id):
         return jsonify(ticket_dicts)
     except Exception as e:
         return jsonify({'status': 'error', 'message': f'No se ha podido obtener el ticket'})
-
-if __name__ == "__main__":
-    app.run(debug=True)
 
 def home():
     return 'hello world'
