@@ -6,30 +6,52 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
 		<attributes>
 			<attribute name="module" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER">
+	<classpathentry exported="true" kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX">
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/JavaPhoenix/jackson-annotations-2.15.0.jar"/>
-	<classpathentry kind="lib" path="D:/JavaPhoenix/jackson-core-2.15.0.jar"/>
-	<classpathentry kind="lib" path="D:/JavaPhoenix/jackson-core-2.15.0-javadoc.jar"/>
-	<classpathentry kind="lib" path="D:/JavaPhoenix/jackson-databind-2.15.0.jar"/>
-	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+	<classpathentry exported="true" kind="lib" path="D:/JavaPhoenix/jackson-annotations-2.15.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/JavaPhoenix/jackson-core-2.15.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/JavaPhoenix/jackson-core-2.15.0-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/JavaPhoenix/jackson-databind-2.15.0.jar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="D:/JavaClient/lib/commons-cli-1.5.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/JavaClient/lib/httpclient5-5.3.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/JavaClient/lib/httpclient5-cache-5.3.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/JavaClient/lib/httpclient5-fluent-5.3.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/JavaClient/lib/httpclient5-testing-5.3.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/JavaClient/lib/httpcore5-5.2.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/JavaClient/lib/httpcore5-h2-5.2.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/JavaClient/lib/httpcore5-reactive-5.2.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/JavaClient/lib/httpcore5-testing-5.2.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/JavaClient/lib/reactive-streams-1.0.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/JavaClient/lib/rxjava-2.2.21.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/JavaClient/lib/rxjava-3.1.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="D:/JavaClient/lib/slf4j-api-1.7.36.jar"/>
+	<classpathentry kind="lib" path="D:/JavaClient/CORE/lib/commons-cli-1.5.0.jar"/>
+	<classpathentry kind="lib" path="D:/JavaClient/CORE/lib/httpcore5-5.2.4.jar"/>
+	<classpathentry kind="lib" path="D:/JavaClient/CORE/lib/httpcore5-h2-5.2.4.jar"/>
+	<classpathentry kind="lib" path="D:/JavaClient/CORE/lib/httpcore5-reactive-5.2.4.jar"/>
+	<classpathentry kind="lib" path="D:/JavaClient/CORE/lib/httpcore5-testing-5.2.4.jar"/>
+	<classpathentry kind="lib" path="D:/JavaClient/CORE/lib/reactive-streams-1.0.4.jar"/>
+	<classpathentry kind="lib" path="D:/JavaClient/CORE/lib/rxjava-2.2.21.jar"/>
+	<classpathentry kind="lib" path="D:/JavaClient/CORE/lib/rxjava-3.1.6.jar"/>
+	<classpathentry kind="lib" path="D:/JavaClient/CORE/lib/slf4j-api-1.7.36.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
