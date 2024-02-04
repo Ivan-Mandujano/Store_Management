@@ -120,7 +120,7 @@ public class LoginController  {
             wrongLogIn.setTextFill(Color.GREEN);
             Stage stage = (Stage) loginButton.getScene().getWindow();
             // Se abre la nueva vista
-            m.loadView(stage,"Dashboard.fxml", "Dashboard", 1000, 800);
+            m.loadView(stage,"NewUser.fxml", "NewUser", 1000, 800);
         }
 
         else if(username.getText().isEmpty() && password.getText().isEmpty()) {
