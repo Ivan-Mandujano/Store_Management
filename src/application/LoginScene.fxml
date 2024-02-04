@@ -70,7 +70,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Label fx:id="wrongLogIn" layoutX="54.0" layoutY="156.0" prefHeight="25.0" prefWidth="250.0" textAlignment="CENTER" textFill="RED">
+            <Label fx:id="wrongLogIn" alignment="CENTER" layoutX="2.0" layoutY="156.0" prefHeight="25.0" prefWidth="343.0" textAlignment="CENTER" textFill="RED" wrapText="true">
                <font>
                   <Font name="SansSerif Bold" size="15.0" />
                </font>

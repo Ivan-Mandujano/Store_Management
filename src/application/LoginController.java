@@ -45,10 +45,30 @@ public class LoginController  {
 
 
     public void userLogIn(ActionEvent event) throws IOException {
-        checkLogin();
-
+    	Boolean check = checkSend();
+    	if(check) {
+    		checkLogin();
+    	}
     }
-
+    private Boolean checkSend() {
+    	Main m = new Main();
+    	Boolean NoErrors = true;
+    	if(username.getText().isEmpty() && password.getText().isEmpty()) {
+    		wrongLogIn.setText("Please enter the email and password");
+    		NoErrors=false;
+    	}else if(username.getText().isEmpty()) {
+    		wrongLogIn.setText("Please enter the email");
+    		NoErrors=false;
+    	}else if(password.getText().isEmpty()) {
+    		wrongLogIn.setText("Please enter the password");
+    		NoErrors=false;
+    	}
+    	else {
+    		wrongLogIn.setText("");
+    	}
+		return NoErrors;
+    	
+    }
     private void checkLogin() throws IOException {
         Main m = new Main();
         boolean Correct = false;
